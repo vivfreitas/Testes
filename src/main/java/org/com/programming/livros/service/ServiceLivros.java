@@ -1,5 +1,6 @@
 package org.com.programming.livros.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.com.programming.livros.entities.LivrosEntity;
 import org.com.programming.livros.jpa.JpaLivros;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,17 @@ public class ServiceLivros {
     }
 
     public LivrosEntity updateBook(LivrosEntity objNew, Long idLivro){
-        LivrosEntity obj = jpaLivros.findById(idLivro)
-                .orElseThrow(()-> new NullPointerException("Id não encontrado."));
-        updateLivro(obj, objNew);
-        return jpaLivros.save(objNew);
+       try{
+           LivrosEntity obj = jpaLivros.getReferenceById(idLivro);
+           updateLivro(obj, objNew);
+           return jpaLivros.save(obj);
+       } catch (NullPointerException e){
+           System.out.println("Id não encontrado." + e);
+           return objNew;
+       }
     }
 
     private void updateLivro(LivrosEntity obj, LivrosEntity objNew) {
-        obj.setNameLivros(obj.getNameLivros());
+        obj.setNameLivros(objNew.getNameLivros());
     }
 }

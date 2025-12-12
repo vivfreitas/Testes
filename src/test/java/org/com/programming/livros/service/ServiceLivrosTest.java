@@ -64,6 +64,19 @@ public class ServiceLivrosTest {
 
     @Test
     void deveAtualizarLivros(){
+        Long idDoLivro = 1L;
+        LivrosEntity livroAntigo = new LivrosEntity(1L, "Garotas como nós.");
+        LivrosEntity livroNovo = new LivrosEntity(1L, "Percy Jackson e o Mar de monstros.");
 
+        when(jpaLivros.getReferenceById(idDoLivro)).thenReturn(livroAntigo);
+        when(jpaLivros.save(livroAntigo)).thenReturn(livroNovo);
+        LivrosEntity resposta = serviceLivros.updateBook(livroNovo, idDoLivro);
+
+        assertNotNull(resposta);
+        assertEquals(resposta.getIdLivros(), livroNovo.getIdLivros());
+        assertEquals("Percy Jackson e o Mar de monstros.", resposta.getNameLivros());
+
+        verify(jpaLivros, times(1)).getReferenceById(idDoLivro);
+        verify(jpaLivros, times(1)).save(livroAntigo);
     }
 }

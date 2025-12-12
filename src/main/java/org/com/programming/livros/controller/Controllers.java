@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("teste")
@@ -28,8 +29,8 @@ public class Controllers {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<LivrosEntity> atualizarLivro(@RequestBody LivrosEntity obj, @PathVariable Long id){
-        LivrosEntity c = serviceLivros.updateBook(obj, id);
+    public ResponseEntity<Object> atualizarLivro(@RequestBody LivrosEntity obj, @PathVariable Long id){
+        Object c = serviceLivros.updateBook(obj, id);
         return ResponseEntity.ok(c);
     }
 }
